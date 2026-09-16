@@ -7,7 +7,7 @@ import Process from './components/Process'
 import Internships from './components/Internships'
 import Contact from './components/Contact'
 import Footer from './components/Footer'
-import { CustomCursor, Marquee, ScrollProgress, SectionRail } from './motion'
+import { Marquee, ScrollProgress, SectionRail } from './motion'
 
 const marqueeItems = [
   'Websites',
@@ -25,10 +25,12 @@ export default function App() {
   return (
     <>
       <ScrollProgress />
-      <CustomCursor />
       <SectionRail ids={railIds} />
       <Navbar />
-      <main>
+      <a className="skip-link" href="#main">
+        Skip to content
+      </a>
+      <main id="main">
         <Hero />
         <Marquee items={marqueeItems} speed={32} ariaLabel="Capabilities" />
         <About />

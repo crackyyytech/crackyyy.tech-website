@@ -1,55 +1,23 @@
-import { useEffect, useState } from 'react'
-import { useScrollSpy, useTheme } from '../hooks'
+import { useEffect, useRef, useState } from 'react'
+import { NavPopup, ThemeToggle } from './NavbarParts'
+import { useScrollSpy } from '../hooks'
 
-const links = [
+export const navIds = ['about', 'services', 'work', 'process', 'internships', 'contact']
+
+export const navLinks = [
   { label: 'About', href: '#about', id: 'about' },
   { label: 'Services', href: '#services', id: 'services' },
+  { label: 'Work / Case Studies', href: '#work', id: 'work' },
   { label: 'Process', href: '#process', id: 'process' },
   { label: 'Internships', href: '#internships', id: 'internships' },
   { label: 'Contact', href: '#contact', id: 'contact' },
 ]
 
-const navIds = links.map((l) => l.id)
-
-function ThemeToggle() {
-  const [theme, toggle] = useTheme()
-  return (
-    <button
-      className="theme-toggle"
-      onClick={toggle}
-      aria-label={`Switch to ${theme === 'light' ? 'dark' : 'light'} theme`}
-      title="Toggle theme"
-    >
-      <svg
-        className={`theme-icon theme-icon--sun${theme !== 'light' ? ' is-off' : ''}`}
-        viewBox="0 0 24 24"
-        aria-hidden="true"
-      >
-        <circle cx="12" cy="12" r="4.2" fill="none" stroke="currentColor" strokeWidth="1.8" />
-        <g stroke="currentColor" strokeWidth="1.8" strokeLinecap="round">
-          <path d="M12 2.5v2M12 19.5v2M2.5 12h2M19.5 12h2M5 5l1.4 1.4M17.6 17.6 19 19M19 5l-1.4 1.4M6.4 17.6 5 19" />
-        </g>
-      </svg>
-      <svg
-        className={`theme-icon theme-icon--moon${theme === 'dark' ? ' is-on' : ''}`}
-        viewBox="0 0 24 24"
-        aria-hidden="true"
-      >
-        <path
-          d="M20 14.5A8.5 8.5 0 0 1 9.5 4a8.5 8.5 0 1 0 10.5 10.5z"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="1.8"
-          strokeLinejoin="round"
-        />
-      </svg>
-    </button>
-  )
-}
-
 export default function Navbar() {
-  const [scrolled, setScrolled] = useState(false)
   const [open, setOpen] = useState(false)
+  const [scrolled, setScrolled] = useState(false)
+  const menuRef = useRef(null)
+  const toggleRef = useRef(null)
   const active = useScrollSpy(navIds)
 
   useEffect(() => {
@@ -61,15 +29,39 @@ export default function Navbar() {
 
   useEffect(() => {
     if (!open) return
-    const onKey = (e) => {
-      if (e.key === 'Escape') setOpen(false)
-    }
     const prev = document.body.style.overflow
     document.body.style.overflow = 'hidden'
+
+    const first = menuRef.current?.querySelector('a')
+    first?.focus()
+
+    const focusables = () =>
+      Array.from(menuRef.current?.querySelectorAll('a, button, [tabindex]:not([tabindex="-1"])') || [])
+
+    const onKey = (e) => {
+      if (e.key === 'Escape') {
+        setOpen(false)
+        return
+      }
+      if (e.key !== 'Tab') return
+      const items = focusables()
+      if (items.length === 0) return
+      const firstEl = items[0]
+      const lastEl = items[items.length - 1]
+      if (e.shiftKey && document.activeElement === firstEl) {
+        e.preventDefault()
+        lastEl.focus()
+      } else if (!e.shiftKey && document.activeElement === lastEl) {
+        e.preventDefault()
+        firstEl.focus()
+      }
+    }
+
     window.addEventListener('keydown', onKey)
     return () => {
       document.body.style.overflow = prev
       window.removeEventListener('keydown', onKey)
+      toggleRef.current?.focus()
     }
   }, [open])
 
@@ -77,16 +69,22 @@ export default function Navbar() {
     <header className={scrolled ? 'nav nav--scrolled' : 'nav'}>
       <div className="container nav__inner">
         <a href="#top" className="nav__brand">
-          <img src="/brand-name.png" alt="Crackyyy.tech" />
+          <img src="/brand_logo.png" alt="Crackyyy.tech" />
           <span className="nav__dot" aria-hidden="true" />
         </a>
 
-        <nav className={open ? 'nav__links is-open' : 'nav__links'} aria-label="Main">
-          {links.map((l) => (
+        <nav
+          ref={menuRef}
+          id="site-menu"
+          className={open ? 'nav__links is-open' : 'nav__links'}
+          aria-label="Main"
+        >
+          {navLinks.map((l) => (
             <a
               key={l.href}
               href={l.href}
               className={active === l.id ? 'is-active' : ''}
+              aria-current={active === l.id ? 'true' : undefined}
               onClick={() => setOpen(false)}
             >
               {l.label}
@@ -100,9 +98,11 @@ export default function Navbar() {
             Start a project
           </a>
           <button
+            ref={toggleRef}
             className={open ? 'nav__toggle is-open' : 'nav__toggle'}
             aria-label="Toggle menu"
             aria-expanded={open}
+            aria-controls="site-menu"
             onClick={() => setOpen((v) => !v)}
           >
             <span />
@@ -110,6 +110,7 @@ export default function Navbar() {
           </button>
         </div>
       </div>
+      <NavPopup open={open} />
     </header>
   )
 }

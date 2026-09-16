@@ -162,60 +162,7 @@ export function RotatingWord({ words, interval = 2400, className = '' }) {
   )
 }
 
-/* ----------------------------------------------------------- CustomCursor */
-export function CustomCursor() {
-  const reduced = usePrefersReducedMotion()
-  const ref = useRef(null)
-  const [active, setActive] = useState(false)
-
-  useEffect(() => {
-    const el = ref.current
-    if (!el) return
-    if (reduced || window.matchMedia('(pointer: coarse)').matches) return
-
-    let raf = 0
-    const onMove = (e) => {
-      cancelAnimationFrame(raf)
-      raf = requestAnimationFrame(() => {
-        el.style.transform = `translate3d(${e.clientX}px, ${e.clientY}px, 0)`
-        el.style.opacity = '1'
-      })
-    }
-
-    const isInteractive = (target) =>
-      target instanceof Element && !!target.closest('a, button, input, select, textarea, label, [data-cursor]')
-
-    const onOver = (e) => {
-      if (isInteractive(e.target)) setActive(true)
-    }
-    const onOut = (e) => {
-      if (isInteractive(e.target)) setActive(false)
-    }
-    const onLeave = () => {
-      el.style.opacity = '0'
-    }
-
-    window.addEventListener('mousemove', onMove, { passive: true })
-    document.addEventListener('mouseover', onOver)
-    document.addEventListener('mouseout', onOut)
-    document.documentElement.addEventListener('mouseleave', onLeave)
-    return () => {
-      window.removeEventListener('mousemove', onMove)
-      document.removeEventListener('mouseover', onOver)
-      document.removeEventListener('mouseout', onOut)
-      document.documentElement.removeEventListener('mouseleave', onLeave)
-      cancelAnimationFrame(raf)
-    }
-  }, [reduced])
-
-  return (
-    <div
-      ref={ref}
-      className={active ? 'cursor cursor--active' : 'cursor'}
-      aria-hidden="true"
-    />
-  )
-}
+/* ----------------------------------------------------------- (removed: CustomCursor) */
 
 /* ------------------------------------------------------------ SectionRail */
 export function SectionRail({ ids }) {
