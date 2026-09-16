@@ -13,6 +13,8 @@
   --blue: #1268d6;
   --blue-deep: #0a4fb2;
   --blue-soft: rgba(18, 104, 214, 0.08);
+  --blue-cta: #1268d6;
+  --blue-cta-deep: #0a4fb2;
 
   --navy: #0b1a30;
   --navy-2: #123061;
@@ -50,9 +52,11 @@ html[data-theme='dark'] {
   --line: rgba(150, 182, 220, 0.16);
   --line-strong: rgba(150, 182, 220, 0.3);
 
-  --blue: #3da0ff;
+  --blue: #1268d6;
   --blue-deep: #2f8af0;
   --blue-soft: rgba(61, 160, 255, 0.13);
+  --blue-cta: #1f6fc9;
+  --blue-cta-deep: #2068c4;
 
   --navy: #050c18;
   --navy-2: #0e2240;
@@ -243,12 +247,12 @@ p {
 }
 
 .btn--primary {
-  background: var(--blue);
+  background: var(--blue-cta);
   color: #fff;
 }
 
 .btn--primary:hover {
-  background: var(--blue-deep);
+  background: var(--blue-cta-deep);
   box-shadow: 0 12px 26px rgba(18, 104, 214, 0.28);
   transform: translateY(-1px);
 }

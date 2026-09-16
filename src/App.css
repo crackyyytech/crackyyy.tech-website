@@ -1046,7 +1046,7 @@ html[data-theme='dark'] .footer__logo {
 
 .mock__msg--out {
   align-self: flex-end;
-  background: var(--blue);
+  background: var(--blue-cta);
   color: #fff;
   border-bottom-right-radius: 3px;
 }
@@ -1626,7 +1626,7 @@ html[data-theme='dark'] .footer__logo {
 }
 
 .contact__row:hover .contact__icon {
-  background: var(--blue);
+  background: var(--blue-cta);
   color: #fff;
 }
 
