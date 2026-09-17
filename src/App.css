@@ -2144,3 +2144,19 @@ html[data-theme='dark'] .footer__logo {
     text-align: center;
   }
 }
+/* theme-aware mode switching */
+html,
+body {
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.theme-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.theme-toggle svg {
+  width: 20px;
+  height: 20px;
+}
