@@ -2115,3 +2115,32 @@ html[data-theme='dark'] .footer__logo {
     animation: none;
   }
 }
+/* ==================================================================
+   Sticky quick-actions bar (mobile)
+================================================================== */
+@media (max-width: 768px) {
+  body {
+    padding-bottom: calc(66px + env(safe-area-inset-bottom));
+  }
+
+  .sticky-actions {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 60;
+    display: flex;
+    gap: 0.7rem;
+    padding: 0.7rem 1rem calc(0.7rem + env(safe-area-inset-bottom));
+    background: color-mix(in oklab, var(--bg) 86%, transparent);
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
+    border-top: 1px solid var(--line);
+  }
+
+  .sticky-actions__btn {
+    flex: 1;
+    justify-content: center;
+    text-align: center;
+  }
+}

@@ -41,6 +41,14 @@ export default function App() {
         <Internships />
         <Contact />
       </main>
+      <nav className="sticky-actions" aria-label="Quick actions">
+        <a className="btn btn--primary sticky-actions__btn" href="#contact">
+          Start a project
+        </a>
+        <a className="btn btn--outline sticky-actions__btn" href="mailto:crackyyy.tech@gmail.com">
+          Email us
+        </a>
+      </nav>
       <Footer />
     </>
   )
